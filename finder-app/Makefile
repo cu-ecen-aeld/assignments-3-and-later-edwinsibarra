@@ -1,8 +1,7 @@
-# Makefile for the "writer" application
+ #Makefile for the "writer" application
 
 # Compiler and flags
-CROSS_COMPILE ?= ~/aarm/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
-CC := $(CROSS_COMPILE)gcc
+CC := gcc
 CFLAGS := -Wall -Wextra
 
 # Output directory
@@ -18,6 +17,7 @@ ifeq ($(CROSS_COMPILE),)
 else
     # Cross-compilation
     TARGET := $(OUTDIR)/writer-cross
+    CC := $(CROSS_COMPILE)$(CC)
 endif
 
 # Source files
