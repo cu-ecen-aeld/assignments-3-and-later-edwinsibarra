@@ -1,7 +1,7 @@
 # Makefile for the "writer" application
 
 # Compiler and flags
-CROSS_COMPILE ?= aarch64-none-linux-gnu-
+CROSS_COMPILE ?= ~/aarm/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
 CC := $(CROSS_COMPILE)gcc
 CFLAGS := -Wall -Wextra
 
