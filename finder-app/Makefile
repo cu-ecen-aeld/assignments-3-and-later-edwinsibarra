@@ -1,7 +1,8 @@
 # Makefile for the "writer" application
 
 # Compiler and flags
-CC := gcc
+CROSS_COMPILE ?= aarch64-none-linux-gnu-
+CC := $(CROSS_COMPILE)gcc
 CFLAGS := -Wall -Wextra
 
 # Output directory
@@ -17,7 +18,6 @@ ifeq ($(CROSS_COMPILE),)
 else
     # Cross-compilation
     TARGET := $(OUTDIR)/writer-cross
-    CC := $(CROSS_COMPILE)$(CC)
 endif
 
 # Source files
