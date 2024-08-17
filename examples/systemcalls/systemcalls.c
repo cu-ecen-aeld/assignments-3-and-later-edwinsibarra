@@ -53,7 +53,7 @@ bool do_exec(int count, ...)
     command[count] = NULL;
     // this line is to avoid a compile warning before your implementation is complete
     // and may be removed
-    command[count] = command[count];
+    // command[count] = command[count];
 
 /*
  * TODO:
@@ -116,7 +116,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
     command[count] = NULL;
     // this line is to avoid a compile warning before your implementation is complete
     // and may be removed
-    command[count] = command[count];
+    // command[count] = command[count];
 
 
 /*
@@ -126,7 +126,55 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+    
 
+    pid_t pid = fork();
+
+    if (pid == -1) {
+        // Fork failed
+        perror("fork");
+        return false;
+    } else if (pid == 0) {
+        // Child process
+
+        // Open the output file
+        int fd = open(outputfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd == -1) {
+            perror("open");
+            exit(EXIT_FAILURE);
+        }
+
+        // Redirect standard output to the file
+        if (dup2(fd, STDOUT_FILENO) == -1) {
+            perror("dup2");
+            close(fd);
+            exit(EXIT_FAILURE);
+        }
+
+        // Close the file descriptor as it's no longer needed
+        close(fd);
+
+        // Execute the command
+        execv(command[0], command);
+        // If execv returns, it must have failed
+        perror("execv");
+        exit(EXIT_FAILURE);
+    } else {
+        // Parent process
+        int status;
+        if (wait(&status) == -1) {
+            // Wait failed
+            perror("wait");
+            return false;
+        }
+
+        // Check if the child process terminated successfully
+        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     va_end(args);
 
     return true;
