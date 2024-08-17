@@ -92,7 +92,7 @@ bool do_exec(int count, ...)
             return false;
         }
     }
-}
+
     va_end(args);
 
     return true;
