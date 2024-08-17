@@ -79,9 +79,9 @@ bool do_exec(int count, ...)
     } else {
         // Parent process
         int status;
-        if (waitpid(pid, &status, 0) == -1) {
+        if (wait(&status) == -1) {
             // Wait failed
-            perror("waitpid");
+            perror("wait");
             return false;
         }
 
