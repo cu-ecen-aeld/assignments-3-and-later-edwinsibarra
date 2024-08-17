@@ -64,7 +64,35 @@ bool do_exec(int count, ...)
  *   as second argument to the execv() command.
  *
 */
+    pid_t pid = fork();
 
+    if (pid == -1) {
+        // Fork failed
+        perror("fork");
+        return false;
+    } else if (pid == 0) {
+        // Child process
+        execv(command[0], command);
+        // If execv returns, it must have failed
+        perror("execv");
+        exit(EXIT_FAILURE);
+    } else {
+        // Parent process
+        int status;
+        if (waitpid(pid, &status, 0) == -1) {
+            // Wait failed
+            perror("waitpid");
+            return false;
+        }
+
+        // Check if the child process terminated successfully
+        if (WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
     va_end(args);
 
     return true;
