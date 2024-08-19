@@ -36,7 +36,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
 
     # TODO: Add your kernel build steps here
     
-    #make defconfig
+    make defconfig
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- mrpoper
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig
     make -j4 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
