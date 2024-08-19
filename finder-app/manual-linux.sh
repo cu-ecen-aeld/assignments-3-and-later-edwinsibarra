@@ -5,7 +5,6 @@
 set -e
 set -u
 
-TEMPDIR=`pwd`
 OUTDIR=/tmp/aeld
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.1.10
@@ -37,7 +36,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
 
     # TODO: Add your kernel build steps here
     
-    make defconfig
+    #make defconfig
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- mrpoper
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig
     make -j4 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
