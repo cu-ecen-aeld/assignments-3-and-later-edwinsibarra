@@ -55,7 +55,9 @@ then
 fi
 
 # TODO: Create necessary base directories
-
+mkdir -p bin dev etc hom lib lib64 proc sbin tmp usr var
+mkdir -p usr/bin usr/lin usr/sbin
+mkdir -p var/log
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
 then
