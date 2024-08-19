@@ -38,7 +38,9 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     
     #make defconfig
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrpoper
+    echo "MRPROPER DONE"
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
+    echo "DEFCONFIG DONE"
     make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} modules
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
