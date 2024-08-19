@@ -37,11 +37,11 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     # TODO: Add your kernel build steps here
     
     #make defconfig
-    make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- mrpoper
-    make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig
-    make -j4 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
-    make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
-    make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrpoper
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
+    make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} modules
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 fi
 
 echo "Adding the Image in outdir"
