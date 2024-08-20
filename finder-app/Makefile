@@ -1,43 +1,10 @@
- #Makefile for the "writer" application
+CROSS_COMPILE=aarch64-none-linux-gnu-gcc
 
-# Compiler and flags
-CC := gcc
-CFLAGS := -Wall -Wextra
+hostmake: writer.c
+	gcc -o  writer writer.c
 
-# Output directory
-OUTDIR := bin
-
-# Default target: build the "writer" application
-.DEFAULT_GOAL := writer
-
-# Platform-specific settings
-ifeq ($(CROSS_COMPILE),)
-    # Native build
-    TARGET := $(OUTDIR)/writer
-else
-    # Cross-compilation
-    TARGET := $(OUTDIR)/writer-cross
-    CC := $(CROSS_COMPILE)$(CC)
-endif
-
-# Source files
-SRCS := writer.c
-
-# Object files
-OBJS := $(SRCS:%.c=$(OUTDIR)/%.o)
-
-# Build the application
-$(TARGET): $(OBJS)
-	@mkdir -p $(OUTDIR)
-	$(CC) $(CFLAGS) -o $@ $^
-
-# Clean target: remove application and object files
 clean:
-	rm -rf $(OUTDIR)
+	rm -f writer
 
-# Compile source files
-$(OUTDIR)/%.o: %.c
-	@mkdir -p $(OUTDIR)
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-.PHONY: clean
+arm-make:
+	$(CROSS_COMPILE) -o writer writer.c
