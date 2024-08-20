@@ -42,7 +42,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
     echo "DEFCONFIG DONE"
     make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
-    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} modules
+    make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} modules
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 fi
 
@@ -57,6 +57,7 @@ then
 fi
 
 # TODO: Create necessary base directories
+echo "Create necessary base directoriessssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
 mkdir -p "${OUTDIR}/rootfs"
 cd "${OUTDIR}/rootfs"
 mkdir -p bin dev etc home lib lib64 proc sbin sys tmp usr var
@@ -69,6 +70,7 @@ git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
     # TODO:  Configure busybox
+    echo "configuring Busybox!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     make distclean
     make defconfig
 else
@@ -76,25 +78,28 @@ else
 fi
 
 # TODO: Make and install busybox
+echo "configuring Busybox!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 make distclean
 make defconfig
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-make CONFIG_PREFIX = /path/to/rootdir ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
+make CONFIG_PREFIX="${OUTDIR}/rootfs" ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 echo "Library dependencies"
-cd ${OUTDIR}/rootfs
-${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
-${CROSS_COMPILE}readelf -a bin/busybox | grep "Shared library"
+${CROSS_COMPILE}readelf -a "${OUTDIR}/rootfs/bin/busybox" | grep "program interpreter"
+${CROSS_COMPILE}readelf -a "${OUTDIR}/rootfs/bin/busybox" | grep "Shared library"
 
 # TODO: Add library dependencies to rootfs
+echo "Add library dependencies to rootfs"
 SYSROOT=`${CROSS_COMPILE}gcc -print-sysroot`
 cp -a ${SYSROOT}/lib/ld-linux-aarch64.so.1 ${OUTDIR}/rootfs/lib/
 cp -a ${SYSROOT}/lib64/* ${OUTDIR}/rootfs/lib64/
 # TODO: Make device nodes
+echo "Make device nodes"
 cd "${OUTDIR}/rootfs"
 sudo mknod -m 666 dev/null c 1 3
 sudo mknod -m 620 dev/console c 5 1
 # TODO: Clean and build the writer utility
-cd ${CALLING_DIR}
+echo "Clean and build the writer utility"
+cd ${FINDER_APP_DIR}
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
 cp writer ${OUTDIR}/rootfs/home/
 # TODO: Copy the finder related scripts and executables to the /home directory
