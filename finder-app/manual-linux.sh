@@ -37,7 +37,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     # TODO: Add your kernel build steps here
     
     make defconfig
-    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrpoper
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     echo "MRPROPER DONE"
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
     echo "DEFCONFIG DONE"
