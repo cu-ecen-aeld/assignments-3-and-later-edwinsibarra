@@ -24,6 +24,7 @@ void* threadfunc(void* thread_param)
     sleep(thread_func_args->wait_to_release_ms);
     //releasing
     pthread_mutex_unlock(&thread_func_args->mutex);
+    thread_func_args->thread_complete_success = true;
     return thread_param;
 }
 
@@ -44,9 +45,9 @@ bool start_thread_obtaining_mutex(pthread_t *thread, pthread_mutex_t *mutex,int 
                             NULL,
                             &threadfunc,
                             &tinfo);
-    if (*thread){
-        tinfo.thread_complete_success = true;
-        return true;
+    if (rc !=0){
+        ERROR_LOG("Thread Failed");
     }
+    return true;
 }
 
