@@ -21,7 +21,7 @@ void* threadfunc(void* thread_param)
     //obtaining
     pthread_mutex_lock(&thread_func_args->mutex);
     //waiting
-    sleep(thread_func_args->wait_to_release_ms) * 1000;
+    sleep(thread_func_args->wait_to_release_ms * 1000);
     //releasing
     pthread_mutex_unlock(&thread_func_args->mutex);
     thread_func_args->thread_complete_success = true;
