@@ -17,11 +17,11 @@ void* threadfunc(void* thread_param)
     //struct thread_data* thread_func_args = (struct thread_data *) thread_param;
     struct thread_data* thread_func_args = (struct thread_data *) thread_param;
     //waiting
-    sleep(thread_func_args->wait_to_obtain_ms);
+    sleep(thread_func_args->wait_to_obtain_ms * 1000);
     //obtaining
     pthread_mutex_lock(&thread_func_args->mutex);
     //waiting
-    sleep(thread_func_args->wait_to_release_ms);
+    sleep(thread_func_args->wait_to_release_ms) * 1000;
     //releasing
     pthread_mutex_unlock(&thread_func_args->mutex);
     thread_func_args->thread_complete_success = true;
