@@ -43,13 +43,15 @@ bool start_thread_obtaining_mutex(pthread_t *thread, pthread_mutex_t *mutex,int 
      struct thread_data *tinfo = (struct thread_data *)malloc(sizeof(struct thread_data));
      tinfo->wait_to_obtain_ms = wait_to_obtain_ms;
      tinfo->wait_to_release_ms = wait_to_release_ms;
-     tinfo->mutex = *mutex;
+     tinfo->mutex = mutex;
+     tinfo->thread_complete_success = false;
      int rc = pthread_create(thread,
                             NULL,
-                            &threadfunc,
-                            &tinfo);
+                            threadfunc,
+                            tinfo);
     if (rc !=0){
-        ERROR_LOG("Thread Failed");
+        free(tinfo);
+        return false;
     }
     return true;
 }
