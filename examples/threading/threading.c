@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <pthread.h>
 
 // Optional: use these functions to add debug or error prints to your application
 #define DEBUG_LOG(msg,...)
@@ -17,13 +18,14 @@ void* threadfunc(void* thread_param)
     //struct thread_data* thread_func_args = (struct thread_data *) thread_param;
     struct thread_data* thread_func_args = (struct thread_data *) thread_param;
     //waiting
-    sleep(thread_func_args->wait_to_obtain_ms * 1000);
+    usleep(thread_func_args->wait_to_obtain_ms * 1000);
     //obtaining
-    pthread_mutex_lock(&thread_func_args->mutex);
+    pthread_mutex_lock(thread_func_args->mutex);
     //waiting
-    sleep(thread_func_args->wait_to_release_ms * 1000);
+    usleep(thread_func_args->wait_to_release_ms * 1000);
+
     //releasing
-    pthread_mutex_unlock(&thread_func_args->mutex);
+    pthread_mutex_unlock(thread_func_args->mutex);
     thread_func_args->thread_complete_success = true;
     return thread_param;
 }
@@ -39,16 +41,16 @@ bool start_thread_obtaining_mutex(pthread_t *thread, pthread_mutex_t *mutex,int 
      *
      * See implementation details in threading.h file comment block
      */
-    printf("thread_data created");
+    
      struct thread_data *tinfo = (struct thread_data *)malloc(sizeof(struct thread_data));
-     tinfo->wait_to_obtain_ms = wait_to_obtain_ms;
-     tinfo->wait_to_release_ms = wait_to_release_ms;
-     tinfo->mutex = *mutex;
-     tinfo->thread_complete_success = false;
-     
      if (tinfo == NULL) {
         return false;
     }
+     tinfo->wait_to_obtain_ms = wait_to_obtain_ms;
+     tinfo->wait_to_release_ms = wait_to_release_ms;
+     tinfo->mutex = mutex;
+     tinfo->thread_complete_success = false;
+     
      int rc = pthread_create(thread,
                             NULL,
                             threadfunc,
