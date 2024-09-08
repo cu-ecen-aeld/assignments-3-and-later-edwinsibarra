@@ -99,9 +99,8 @@ sudo mknod -m 666 dev/null c 1 3
 sudo mknod -m 620 dev/console c 5 1
 # TODO: Clean and build the writer utility
 echo "Clean and build the writer utility"
-cd ${FINDER_APP_DIR}
-make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-cp writer ${OUTDIR}/rootfs/home/
+make clean
+make CROSS_COMPILE all
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
 cp finder.sh ${OUTDIR}/rootfs/home
