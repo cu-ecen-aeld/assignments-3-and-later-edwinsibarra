@@ -48,8 +48,8 @@ fi
 
 # Clean previous build artifacts and compile the writer application
 echo "Removing the old writer utility and compiling as a native application"
-# make clean
-# make writer
+make clean
+make writer
 
 for i in $( seq 1 $NUMFILES)
 do
