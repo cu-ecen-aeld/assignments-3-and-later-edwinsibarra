@@ -166,17 +166,17 @@ int main(int argc, char *argv[]) {
         clean_and_exit(EXIT_FAILURE);
     }
     if (bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen) != 0) {
-        syslog(LOG_ERR, "Error to binding the socket: %m");
+        syslog(LOG_ERR, "Error while binding the socket: %m");
         freeaddrinfo(servinfo);
         clean_and_exit(EXIT_FAILURE);
     }
     freeaddrinfo(servinfo);
-    // If running as a daemon, daemonize before connection after checking binding is successful
+
     if (is_daemon) run_daemon();
     
     // Start listening for connections
     if (listen(sockfd, BACKLOG) != 0) {
-        syslog(LOG_ERR, "Error to listen to the socket: %m");
+        syslog(LOG_ERR, "Error while listening to the socket: %m");
         clean_and_exit(EXIT_FAILURE);
     }
     // Main loop to accept and handle client connections
@@ -186,7 +186,7 @@ int main(int argc, char *argv[]) {
         char ipstr[INET6_ADDRSTRLEN];
         accepted_sockfd = accept(sockfd, (struct sockaddr *) &their_addr, &addr_size);
         if (accepted_sockfd == -1) {
-            syslog(LOG_ERR, "Error while accept the socket: %m");
+            syslog(LOG_ERR, "Error while accepting the socket: %m");
             clean_and_exit(EXIT_FAILURE);
         }
         
